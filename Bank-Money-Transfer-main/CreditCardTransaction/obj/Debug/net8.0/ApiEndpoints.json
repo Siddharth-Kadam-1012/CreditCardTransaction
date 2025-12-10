@@ -1,0 +1,128 @@
+[
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "Delete",
+    "RelativePath": "api/CreditCard/by-card/{cardNumber}/{Pin}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "Pin",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "Create",
+    "RelativePath": "api/CreditCard/create-account",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CreditCardTransaction.Data.DTOs.CreateCreditCardDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "GetByCardNumber",
+    "RelativePath": "api/CreditCard/get-by-card-number/{cardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "Update",
+    "RelativePath": "api/CreditCard/update-by-card-no/{cardNumber}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CreditCardTransaction.Data.DTOs.UpdateCreditCardDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "UpdateCreditLimit",
+    "RelativePath": "api/CreditCard/update-credit-limit-by-card-no/{cardNumber}/{newCreditLimit}/{Pin}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newCreditLimit",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "Pin",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.CreditCardController",
+    "Method": "UpdatePin",
+    "RelativePath": "api/CreditCard/update-pin-by-card-no/{cardNumber}/{oldPin}/{newPin}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "oldPin",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "newPin",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

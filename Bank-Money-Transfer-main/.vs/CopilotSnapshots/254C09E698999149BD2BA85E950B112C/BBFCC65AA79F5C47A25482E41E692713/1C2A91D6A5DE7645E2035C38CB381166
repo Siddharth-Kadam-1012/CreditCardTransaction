@@ -1,0 +1,130 @@
+﻿using Azure.Core;
+using BankingTransaction.Data;
+using BankingTransaction.Data.DTO;
+using BankingTransaction.Data.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
+using System.Text.RegularExpressions;
+namespace BankingTransaction.Services
+{
+    public class TransactionService
+    {
+        private readonly AppDbContext _context;
+
+        private const decimal DEFAULT_MIN_BALANCE = 0m;
+        private const decimal MAX_TRANSFER_LIMIT = 100000m;
+        private static readonly Regex AccountRegex = new Regex(@"^\d{10}$", RegexOptions.Compiled);
+
+        public TransactionService(AppDbContext context)
+        {
+            _context = context;
+        }
+
+        private TransactionDto MapToDto(Transaction t)
+        {
+
+            if (t == null) return null;
+            return new TransactionDto
+            {
+                Id = t.Id,
+                FromAccountId = t.FromAccountId,
+                ToAccountId = t.ToAccountId,
+                Amount = t.Amount,
+                Status = t.status.ToString(),
+                //InitiatedAt = t.InitiatedAt,
+                CompletedAt = t.CompletedAt,
+                FailureReason = t.FailureReason
+            };
+        }
+
+        public async Task<(bool Success, string Message, List<TransactionDto> Data)>
+            GetTransactionsByAccountNumberAsync(string accountNumber)
+        {
+
+            if (!AccountRegex.IsMatch(accountNumber))
+                return (false, "Invalid account number", null);
+            
+
+            var accountExists = await _context.Users
+                .AnyAsync(u => u.AccountNumber == accountNumber);
+
+            if (!accountExists)
+                return (false, "Account not found", null);
+
+            // Fetch transactions
+            var transactions = await _context.Transactions
+                .Where(t => t.FromAccountId == accountNumber || t.ToAccountId == accountNumber)
+                .OrderByDescending(t => t.Id)
+                .ToListAsync();
+
+            var dtoList = transactions.Select(MapToDto).ToList();
+
+            return (true, "Success", dtoList);
+        }
+        public async Task<TransferResponse> TransferAsync(TransferRequest request)
+        {
+            if (request == null)
+                return new TransferResponse { Success = false, Message = "Invalid request" };
+
+           
+            
+            if (!AccountRegex.IsMatch(request.FromAccountNumber) || !AccountRegex.IsMatch(request.ToAccountNumber))
+                return new TransferResponse { Success = false, Message = "Invalid account number" };
+
+            if (request.FromAccountNumber== request.ToAccountNumber)
+                return new TransferResponse { Success = false, Message = "Cannot transfer money in same Account" };
+
+            if (request.Amount <= 0)
+                return new TransferResponse { Success = false, Message = "Invalid transfer amount" };
+
+            var fromAccount = await _context.Users
+               .Where(u => u.AccountNumber == request.FromAccountNumber).FirstOrDefaultAsync();
+
+            var toAccount = await _context.Users
+               .Where(u => u.AccountNumber == request.ToAccountNumber).FirstOrDefaultAsync();
+
+            if (fromAccount == null || toAccount == null)
+                return new TransferResponse { Success = false, Message = "Account not found" };
+
+            if (fromAccount.Balance < request.Amount)
+                return new TransferResponse { Success = false, Message = "Insufficient funds" };
+
+            using (var transaction = await _context.Database.BeginTransactionAsync())
+            {
+                try
+                {
+                    fromAccount.Balance -= request.Amount;
+                    toAccount.Balance += request.Amount;
+
+                    var transactionRecord = new Transaction
+                    {
+                        FromAccountId = fromAccount.AccountNumber,
+                        ToAccountId = toAccount.AccountNumber,
+                        Amount = request.Amount,
+                        status = TransactionStatus.Pending,
+                        //InitiatedAt = DateTime.UtcNow
+                        CompletedAt = DateTime.UtcNow,
+                    };
+
+                    transactionRecord.status = TransactionStatus.Completed;
+                    _context.Transactions.Add(transactionRecord);
+                    await _context.SaveChangesAsync();
+
+                    await transaction.CommitAsync();
+
+                    return new TransferResponse
+                    {
+                        Success = true,
+                        Message = "Transfer successful",
+                        Transaction = MapToDto(transactionRecord)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    await transaction.RollbackAsync();
+                    return new TransferResponse { Success = false, Message = "Transfer failed"+ex.Message, Transaction = null };
+                }
+            }
+        }
+    }
+    }

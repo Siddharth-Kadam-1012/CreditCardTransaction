@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="BankingTransaction/BankingTransaction.csproj" />
+  <Project Path="CreditCardTransaction/CreditCardTransaction.csproj" Id="41218a58-b262-47d9-a5d8-cb737e065689" />
+</Solution>
