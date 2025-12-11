@@ -124,5 +124,42 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.PaymentController",
+    "Method": "GetByCard",
+    "RelativePath": "api/Payment/by-card/{cardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.PaymentController",
+    "Method": "Pay",
+    "RelativePath": "api/Payment/pay-bill/{cardNumber}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CreditCardTransaction.Data.DTOs.CreatePaymentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

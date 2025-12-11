@@ -9,8 +9,11 @@ namespace CreditCardTransaction.Data
 
         public DbSet<CreditCard> CreditCard { get; set; }
 
+        public DbSet<Payment> Payments { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<CreditCard>(b =>
             {
@@ -24,6 +27,15 @@ namespace CreditCardTransaction.Data
                 b.Property(x => x.Pin).IsRequired();
 
             });
+            modelBuilder.Entity<Payment>(b =>
+            {
+                b.HasKey(p => p.Id);
+                b.Property(p => p.Amount).HasColumnType("decimal(18,2)");
+                b.Property(p => p.PaymentDate).IsRequired();
+                b.Property(p => p.Method).HasMaxLength(50);
+                
+            });
+
         }
     }
 }
