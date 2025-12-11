@@ -13,6 +13,14 @@
         public DateTime PaymentDate { get; set; }
 
         // optional: method (Cash, Online, NEFT, Card etc.)
-        public string? Method { get; set; }
+        public PaymentCategory Method { get; set; }
+    }
+
+    public enum PaymentCategory
+    {
+        upi =1,
+        netbanking=2,
+        card=3,
+        rtgs=4
     }
 }

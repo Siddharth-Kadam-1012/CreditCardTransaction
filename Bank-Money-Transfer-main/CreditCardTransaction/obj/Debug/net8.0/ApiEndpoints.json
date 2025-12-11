@@ -161,5 +161,42 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.TransactionController",
+    "Method": "Create",
+    "RelativePath": "api/Transaction/create-transaction/{cardNumber}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "dto",
+        "Type": "CreditCardTransaction.Data.DTOs.TransactionDTOs\u002BCreateTransactionDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CreditCardTransaction.Controllers.TransactionController",
+    "Method": "GetByCard",
+    "RelativePath": "api/Transaction/get-transaction/{cardNumber}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "cardNumber",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]

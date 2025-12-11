@@ -54,7 +54,11 @@ namespace CreditCardTransaction.Services
             // cannot pay more than outstanding (optionally allow overpay to create negative outstanding)
             if (dto.Amount > card.Outstanding)
             {
-                throw new ArgumentException("Payment amount cannot exceed outstanding balance.");
+                if(card.Outstanding == 0)
+                {
+                    throw new ArgumentException("You don't have any outstanding balance left!");
+                }
+                throw new ArgumentException($"Payment amount cannot exceed outstanding balance rupees {card.Outstanding}.");
             }
 
             using var tx = await _context.Database.BeginTransactionAsync(ct);

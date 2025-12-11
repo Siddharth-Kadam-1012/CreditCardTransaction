@@ -69,13 +69,14 @@ namespace CreditCardTransaction.Services
                 CreditLimit = dto.CreditLimit,
                 Outstanding = 0,
                 BillingDate = DateTime.UtcNow.Date.AddMonths(1),
-                Pin = dto.Pin
+                Pin = dto.Pin,
+                RewardsBalance = 0
             };
 
             // Additional server-side checks
-            if (entity.Outstanding < 0) throw new ArgumentException("Outstanding cannot be negative.");
+            //if (entity.Outstanding < 0) throw new ArgumentException("Outstanding cannot be negative.");
             if (entity.CreditLimit < 0) throw new ArgumentException("CreditLimit cannot be negative.");
-            if (entity.Outstanding > entity.CreditLimit) throw new ArgumentException("Outstanding cannot exceed CreditLimit.");
+            //if (entity.Outstanding > entity.CreditLimit) throw new ArgumentException("Outstanding cannot exceed CreditLimit.");
 
             _context.CreditCard.Add(entity);
             await _context.SaveChangesAsync(ct);

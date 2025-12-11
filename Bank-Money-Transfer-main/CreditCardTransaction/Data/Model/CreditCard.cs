@@ -16,6 +16,8 @@
         public decimal CreditLimit { get; set; }
 
         public decimal Outstanding { get; set; }
+        public decimal RewardsBalance { get; set; } = 0;
+
 
         public DateTime BillingDate { get; set; }
     }

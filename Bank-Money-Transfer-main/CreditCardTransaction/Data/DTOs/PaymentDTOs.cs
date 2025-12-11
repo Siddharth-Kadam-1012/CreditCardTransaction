@@ -1,4 +1,6 @@
-﻿namespace CreditCardTransaction.Data.DTOs
+﻿using CreditCardTransaction.Data.Model;
+
+namespace CreditCardTransaction.Data.DTOs
 {
     public class PaymentDTOs
     {
@@ -9,7 +11,7 @@
         public decimal Amount { get; set; }
         public int? Pin { get; set; }
 
-        public string? Method { get; set; }
+        public PaymentCategory Method { get; set; }
     }
 
     public class PaymentDto
@@ -18,7 +20,7 @@
         public int CardNumber { get; set; }
         public decimal Amount { get; set; }
         public DateTime PaymentDate { get; set; }
-        public string? Method { get; set; }
+        public PaymentCategory Method { get; set; }
     }
 
 }
