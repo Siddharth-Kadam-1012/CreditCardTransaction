@@ -37,14 +37,12 @@ namespace CreditCardTransaction.Services
             var card = await _context.CreditCard.FirstOrDefaultAsync(c => c.CardNumber == cardNumber, ct);
             if (card == null) throw new ArgumentException("Card not found.");
 
-            // optional PIN validation
-            if (dto.Pin.HasValue)
-            {
-                if (dto.Pin.Value < 1000 || dto.Pin.Value > 9999)
-                    throw new ArgumentException("Pin must be a 4-digit number.");
-                if (card.Pin != dto.Pin.Value)
-                    throw new ArgumentException("Invalid PIN.");
-            }
+            
+            if (dto.Pin.Value < 1000 || dto.Pin.Value > 9999)
+                throw new ArgumentException("Pin must be a 4-digit number.");
+            if (card.Pin != dto.Pin.Value)
+                throw new ArgumentException("Invalid PIN.");
+            
 
             // credit limit check: ensure outstanding + amount <= credit limit
             var newOutstanding = card.Outstanding + dto.Amount;
